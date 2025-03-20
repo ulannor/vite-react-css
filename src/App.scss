@@ -1,0 +1,314 @@
+@mixin responsive($size) {
+  @if $size == "tablet" {
+    @media (min-width: 768px) {
+      @content;
+    }
+  } @else if $size == "desktop" {
+    @media (min-width: 1440px) {
+      @content;
+    }
+  }
+}
+
+html {
+  font-size: 14px;
+
+  @include responsive("tablet") {
+    font-size: 16px;
+  }
+
+  @include responsive("desktop") {
+    font-size: 18px;
+  }
+}
+
+$primary-color: #ff5e56;
+$secondary-color: #dc3131;
+$text-color: #fff;
+$muted-color: #808080;
+$gradient-bg: linear-gradient(0deg, $primary-color, $primary-color),
+  linear-gradient(255.35deg, $secondary-color 0.83%, rgba(255, 79, 79, 0) 108.93%);
+
+// Button Styling Mixin
+@mixin button-style($bg, $color, $border: none, $padding: 0.75rem 1.5rem) {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: $color;
+  background: $bg;
+  border-radius: 6px;
+  border: $border;
+  padding: $padding;
+  transition: 0.2s ease-in-out;
+
+  @include responsive("tablet") {
+    padding: 1rem 2rem;
+    line-height: 1rem;
+    font-size: 1rem;
+  }
+}
+
+// Gradient Background Mixin
+@mixin gradient-bg {
+  background: $gradient-bg;
+}
+
+// Background Section
+.background {
+  @include gradient-bg;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+// BUTTON COMPONENT
+.btn {
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  width: auto;
+
+  &.full-width {
+    width: 100%;
+  }
+
+  &.text {
+    padding: 0px;
+    background: transparent;
+    border: none;
+    color: #ea0029;
+    &:hover {
+      color: #f53a31;
+    }
+
+    &:active {
+      color: #ea0029;
+      transition: 0s;
+    }
+  }
+
+  &.filled {
+    @include button-style($gradient-bg, $text-color, 1px solid $text-color);
+
+    &:hover,
+    &:active {
+      background: #ffffff;
+      color: #000;
+    }
+
+    &.disabled {
+      background: #bec5cc;
+      pointer-events: none;
+
+      &:hover,
+      &:active {
+        background: #bec5cc;
+        color: $text-color;
+      }
+    }
+  }
+
+  &.shadow {
+    @extend .filled;
+    box-shadow: 0 0 1.5rem 0 #ea002954;
+    border: none;
+
+    &:hover {
+      color: #fff;
+      background: #ea0029;
+    }
+
+    &:active {
+      color: #fff;
+      background: #ea0029;
+    }
+
+    &.disabled {
+      background: #bec5cc;
+      pointer-events: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// POPUP COMPONENT
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: #fff;
+  position: relative;
+  color: #000;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  @include responsive("tablet") {
+    height: auto;
+    max-width: 600px;
+    border-radius: 30px;
+  }
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  height: 100%;
+}
+
+.popup-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #ea0029;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.popup-content-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: min-content;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input-error {
+  color: #ea0029;
+  font-size: 0.8rem; // Small error message
+  min-height: 0.8rem; // ✅ Reserves space to prevent shifting
+  visibility: hidden; // Initially hidden
+}
+
+.input-error.visible {
+  visibility: visible; // ✅ Only shows when error occurs
+}
+
+.months-select-wrapper {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  flex-direction: column;
+}
+
+.total-payment-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.end-button {
+  margin-top: auto;
+}
+
+// TYPOGRAPHY
+h3 {
+  font-size: 1.8rem;
+}
+
+h4 {
+  font-size: 1.4rem;
+}
+
+p.muted {
+  color: $muted-color;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.result {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #000;
+}
+
+// Form Styling
+.input-field {
+  height: 3rem;
+  width: 100%;
+  border-radius: 3px;
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #dfe3e6;
+  color: #000;
+  padding: 10px;
+
+  &::placeholder {
+    color: #bec5cc;
+
+    opacity: 1;
+    font-weight: 400;
+  }
+
+  &:hover {
+    border: 1px solid #000000;
+  }
+
+  &.error {
+    border-color: #ea0029;
+  }
+}
+
+// Months Selection Buttons
+.months-select {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.month-btn {
+  padding: 0.375rem 0.75rem;
+  border-radius: 50px;
+  background: #eef0f2;
+  color: black;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+
+  &:hover {
+    background: #dfe3e6;
+  }
+
+  &:active,
+  &.selected {
+    @include gradient-bg;
+    color: white;
+  }
+}
